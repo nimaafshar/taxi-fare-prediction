@@ -1,20 +1,23 @@
 # New York City Taxi Fare Prediction
 
-Training an ML model to predict Taxi Fares using Google BigQueryML and [https://console.cloud.google.com/marketplace/product/city-of-new-york/nyc-tlc-trips](NYC TLC Trips).
+Training an ML model to predict Taxi Fares using Google BigQueryML and [NYC TLC Trips](https://console.cloud.google.com/marketplace/product/city-of-new-york/nyc-tlc-trips).
+
+[NYC taxi fare prediction Kaggle Challenge](https://www.kaggle.com/c/new-york-city-taxi-fare-prediction/overview/getting-started)
+
 
 ## Experiment Details
 This dataset is available on google cloud public datasets and it contains new york city's taxi and limousine trips since 2009.
-in it's tables it usually contains filed like number of passangers, pickup and dropoff latitude and longitude, trip distance, fare amount, tax amount, tolls amount, payment information, tips , taxes , etc. we use [https://console.cloud.google.com/bigquery](Google BigQuery) to dive into the data and train a regression model on it. Google BigQuery is an standard SQL developed by google. and it allows us to explore and train on terabytes and terabytes of data with dealing with memory limits and operation headaches.
+in it's tables it usually contains filed like number of passangers, pickup and dropoff latitude and longitude, trip distance, fare amount, tax amount, tolls amount, payment information, tips , taxes , etc. we use [Google BigQuery](https://console.cloud.google.com/bigquery) to dive into the data and train a regression model on it. Google BigQuery is an standard SQL developed by google. and it allows us to explore and train on terabytes and terabytes of data with dealing with memory limits and operation headaches.
 
 In this project we first loaded the dataset into the bigquery and decided to filter outliers by limiting the fare amount to 6-200 dollars and limiting the pickup and dropoff locations to newyork city itself in order to avoid very long cab trips in our train and evaulation set. these 2 decreased number of rows from 1 billion to 820 million rows. cause for this experiment we didn't want to use all the 820 million rows for training or evaluation, we used `FARM_FINGERPRINT` as hash function on `pickup_datetime` column and picked 1/1000 of data for training and another 1/1000 of data for evaluation. for feature engineering, we picked  `tolls_amount` + `fare_amount` to be the label for prediction (cause tips are considered noise in `total_fare`). we used day of week, hour of day, euclidean distance between pickup and dropoff point and distance between pickup and dropoff point in latitude and longitude and passengers count as our features. cause Google BigQuery is pretty new it only supports Linear Regression models from all types of regression models. thus we used linear regression as our model. after that we calculated RMSE as evaluation metric and it was about 5 . thus the model could predict fare amount with 5 dollar accuracy wich is not bad for such a small training set and simple model. we can reach better accuracy with training on more data, filtering more outliers, using normalization on some features and picking more complex models.
 
 ## How to Execute
-1. select your project from [https://console.cloud.google.com/projectselector2/home/dashboard](here)
+1. select your project from [here](https://console.cloud.google.com/projectselector2/home/dashboard).
 
-2. Enable the bigquery API from [https://console.cloud.google.com/flows/enableapi?apiid=bigquery](here)
+2. Enable the bigquery API from [here](https://console.cloud.google.com/flows/enableapi?apiid=bigquery)
 
 3. Set up Authentication
-    - Goto [https://console.cloud.google.com/apis/credentials/serviceaccountkey](Service Account Key Page)
+    - Goto [Service Account Key Page](https://console.cloud.google.com/apis/credentials/serviceaccountkey)
     - From the **Service account list**, select New service account.
     - In the **Service account name** field, enter a name.
     - From the Role list, select **Project > Owner**.
