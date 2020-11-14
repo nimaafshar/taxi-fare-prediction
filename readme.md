@@ -60,4 +60,6 @@ Or intall requirement packages from `requirements.txt`
     ```bash
     python3 evaluate_model.py
     ```
+### Alternative Implementation
 
+we can also implement taxifare-prediction model in google cloud using google AI platform and tensorflow models. cause we are using a simple `LinearRegression` model for fare prediction. we can use one of the ready-to-train model images. but in order to use them we should preprocess training and validation data to fit their special format. so we can use dataflow notebooks in order to preprocess the data. for example, one of the preprocessing steps is removing the first row (label row) from the CSV file. after make a training job with a linear regression model and out taxifare data, we should deploy the model. we deploy the model into the AI platform and connect it to API. we can also use this model in BigQuery. we insert model into our BigQuery dataset. but for using it we should convert needed data from every row of database table into a csv row and feed it into the model with a unique key for each row we predict at a time.
